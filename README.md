@@ -1,5 +1,5 @@
 # rsc_remote_recipe
-A LWRP for running remote recipes within RightScale. Searches for servers with recipient_tags and runs recipes on them  Examples would be to attach to load balancers or detach from load balancers.  See example below.
+A LWRP for running remote recipes within RightScale. Searches for servers with recipient_tags and runs recipes on them.  Examples would be to attach to load balancers or detach from load balancers.  See example below.
 
 ### Attributes
 * recipe - the name of the remote recipe to call
