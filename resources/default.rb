@@ -8,8 +8,8 @@
 
 
 # remote_recipe resources
-attribute :recipe, :kind_of => [String], :default => ""
-attribute :recipient_tags, :kind_of => [String,Array], :default => ""
-attribute :attributes, :kind_of => [Hash,NilClass], :default => nil
-
-actions :run
+#attribute :recipe, :kind_of => [String], :default => ""
+#attribute :tags, :kind_of => [String,Array]
+#attribute :attributes, :kind_of => [Hash,NilClass], :default => nil
+#
+#actions :run
