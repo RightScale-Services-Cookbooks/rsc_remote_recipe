@@ -46,7 +46,7 @@ class Chef
       
       resources = api_client.tags.by_tag(resource_type: 'instances', tags: [tags] )
       raise "No Instances found for tag #{tags}" if resources.empty?
-      
+
       resources.first.resource.each do |instance|
         instance.run_executable(right_script_href: right_script.first.href, inputs: attributes)
       end

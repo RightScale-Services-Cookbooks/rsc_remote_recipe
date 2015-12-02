@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: remote_recipe
+# Cookbook Name:: rsc_remote_recipe
 # Recipe:: default
 #
 # Copyright (C) 2013 RightScale, Inc.
@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-
+node.default['build-essential']['compile_time'] = true 
 include_recipe 'build-essential'
 
-log "Installing 'right_api_client' gem"
+#log "Installing 'right_api_client' gem"
 chef_gem 'right_api_client'

@@ -5,4 +5,6 @@ license          "Apache 2.0"
 description      "Runs rightscale remote recipes" 
 version          "1.1.0"
 
+depends 'build-essential'
+
 recipe "rsc_remote_recipe", "runs  remote recipts" 

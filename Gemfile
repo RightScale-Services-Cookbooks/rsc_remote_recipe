@@ -5,9 +5,9 @@ gem 'berkshelf'
 gem 'thor-foodcritic'
 
 group :integration do
-  gem 'test-kitchen', '~> 1.2.1'
-  gem 'kitchen-vagrant'
-  gem 'travis-lint'
-  gem 'chefspec', '~> 2.0.1'
+  gem 'psych', '~> 2.0.5'
   gem 'strainer', '~> 3.3.0'
+  gem 'chefspec', '~> 3.4.0'
+  gem 'travis-lint'
+  gem 'rspec-expectations', '~> 2.14.0'
 end

@@ -21,7 +21,15 @@ lib = File.expand_path('../../libraries', __FILE__)
 $:.unshift(lib) unless $:.include?(lib)
 
 require 'chefspec'
+require 'chefspec/berkshelf'
 require 'remote_recipe'
 require 'provider_remote_recipe'
 require 'resource_remote_recipe'
 
+ChefSpec::Coverage.start!
+
+RSpec.configure do |config|
+  config.platform = 'ubuntu'
+  config.version = '12.04'
+  config.log_level = :error
+end
