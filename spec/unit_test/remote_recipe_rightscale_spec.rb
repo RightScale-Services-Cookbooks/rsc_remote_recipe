@@ -72,6 +72,14 @@ describe Chef::RemoteRecipeRightscale do
     instance.stub(:run_executable)
     instance
   }
+  let(:resources_stub){
+    resources = double('resources', :links => [], :href => 'some_href',
+      :resource=>[instance_stub]) 
+    #resources.stub(resource).and_return([instance_stub])
+    resources
+  }
+  
+  let(:right_script_stub){double('right_script', :href=>'some_href')}
   
   let(:attributes){{"text:my_input"=>"input value"}}
   
@@ -81,14 +89,14 @@ describe Chef::RemoteRecipeRightscale do
  
       client_stub.right_scripts.should_receive(:index).
         with(hash_including(filter: ["name==my script"])).
-        and_return([:href=>'/some_href'])
+        and_return([right_script_stub])
         
       client_stub.tags.should_receive(:by_tag).
         with(hash_including(resource_type: 'instances', tags: ['database:active=true'])).
-        and_return([resource: [instance_stub]])
+        and_return([resources_stub])
       
       instance_stub.should_receive(:run_executable).
-        with(hash_including(right_script_href: '/some_href', inputs: attributes))
+        with(hash_including(right_script_href: right_script_stub.href, inputs: attributes))
         
       provider.run("my script","database:active=true",attributes)
     end
