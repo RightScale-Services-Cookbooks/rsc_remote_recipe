@@ -9,14 +9,14 @@ to load balancers or detach from load balancers.
 ### Example
 
 ```
-remote_recipe "My RightScript" do
-  tags "load_balancer:active_myapp=true",
-  attributes {'application_bind_ip' => node['cloud'][private_ips][0],
+remote_recipe "Haproxy Frontend - chef" do
+  tags "load_balancer:active_myapp=true"
+  attributes( {'application_bind_ip' => node['cloud']["private_ips"][0],
       'application_bind_port' => node['mycookbook']['listen_port'],
       'application_server_id' => node['rightscale']['instance_uuid'],
       'pool_name' => node['mycookbook']['application_name'],
       'vhost_path' => node['mycookbook']['vhost_path'],
-      'application_action' => 'attach'}
+      'application_action' => 'attach'})
   action :run
 end
 ```
