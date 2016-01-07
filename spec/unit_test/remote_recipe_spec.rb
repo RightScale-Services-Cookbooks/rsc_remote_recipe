@@ -29,7 +29,7 @@ describe Chef::RemoteRecipe do
     context "cloud provider is vagrant" do
       it "should return an object of RemoteRecipeVagrant class" do
         node.set['cloud']['provider'] = 'vagrant'
-        expect(Chef::Log).to receive(:info).with("RemoteReceipt is not supported in Vagrant")
+        expect(Chef::Log).to receive(:info).with("RemoteRecipe is not supported in Vagrant")
         Chef::RemoteRecipe.factory(node)
       end
     end

@@ -2,7 +2,12 @@ require_relative 'spec_helper'
 
 describe 'rsc_remote_recipe::default' do
 
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+ let(:chef_run) do
+    ChefSpec::Runner.new do |node|
+      node.set['rightscale']['refresh_token'] = '123abc'
+      node.set['rightscale']['api_url'] = 'https://us-3.rightscale.com'
+    end.converge(described_recipe)
+  end
   let(:node) { chef_run.node }
 
   it 'includes install recipe' do

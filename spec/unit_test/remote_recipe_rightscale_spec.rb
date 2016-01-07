@@ -53,7 +53,7 @@ describe Chef::RemoteRecipeRightscale do
 
     
   let(:provider) do
-    provider = Chef::RemoteRecipeRightscale.new('123456')
+    provider = Chef::RemoteRecipeRightscale.new('123456','https://us-3.rightscale.com')
     provider.stub(:initialize_api_client).and_return(client_stub)
     provider
   end
