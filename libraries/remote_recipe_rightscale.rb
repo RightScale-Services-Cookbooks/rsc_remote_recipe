@@ -22,17 +22,18 @@ require_relative 'remote_recipe_base'
 class Chef
   class RemoteRecipeRightscale < RemoteRecipeBase
     
-    def initialize(refresh_token)
+    def initialize(refresh_token,api_url)
       @refresh_token = refresh_token
+      @api_url = api_url
     end
     
     def initialize_api_client
       require "right_api_client"
-      RightApi::Client.new(:refresh_token => @refesh_token)
+      RightApi::Client.new(:refresh_token => @refresh_token, :api_url=>@api_url)
     end
     
     def api_client
-       @api_client = initialize_api_client
+      @api_client = initialize_api_client
     end
     
     # Creates a tag on the server.
@@ -43,12 +44,12 @@ class Chef
     def run(name, tags, attributes)
       right_script = api_client.right_scripts.index(filter: ["name==#{name}"])
       raise "RightScript not found #{name}" if right_script.empty?
-      
+          
       resources = api_client.tags.by_tag(resource_type: 'instances', tags: [tags] )
       raise "No Instances found for tag #{tags}" if resources.empty?
 
-      resources.first.resource.each do |instance|
-        instance.run_executable(right_script_href: right_script.first.href, inputs: attributes)
+      resources.each do |resource|
+        status =  resource.resource.run_executable(right_script_href: right_script.first.href, inputs: attributes)
       end
       
     end
