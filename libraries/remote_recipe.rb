@@ -35,11 +35,11 @@ class Chef
       
       if node['cloud'] && node['cloud']['provider'] != 'vagrant'
         # This is a RightScale environment
-        Chef::RemoteRecipeRightscale.new(node["rightscale"]["refresh_token"])
+        Chef::RemoteRecipeRightscale.new(node["rightscale"]["refresh_token"],node["rightscale"]["api_url"])
       elsif node['cloud'] && node['cloud']['provider'] == 'vagrant'
         # This is a Vagrant environment
         #hostname, cache_dir = vagrant_params_from_node(node)
-        Chef::Log.info("RemoteReceipt is not supported in Vagrant")
+        Chef::Log.info("RemoteRecipe is not supported in Vagrant")
         #Chef::RemoteRecipeVagrant.new(hostname, cache_dir)
       else
         raise "Could not detect a supported remote receipe environment."
