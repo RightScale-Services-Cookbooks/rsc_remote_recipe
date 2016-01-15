@@ -61,19 +61,22 @@ describe Chef::RemoteRecipeRightscale do
   let!(:client_stub) do
     client = double('RightApi::Client', :log => nil)
     #client.stub(:get_instance).and_return(instance_stub)
+    client.stub(:resource).and_return(instance_stub)
     client.stub_chain(:right_scripts,:index)
     client.stub_chain(:tags,:by_tag)
+    
     client
   end
   
   
   let(:instance_stub) { 
-    instance = double('instance', :links => [], :href => 'some_href') 
+    instance = double('instance', :links => [], :href => 'some_href')
+    instance.stub_chain(:show,:state).and_return('operational')
     instance.stub(:run_executable)
     instance
   }
   let(:resources_stub){
-    resources = double('resources', :links => [], :href => 'some_href',
+    resources = double('resources', :links => [{:href=>'somehref'},{:href=>'another'}], :href => 'some_href',
       :resource=>[instance_stub]) 
     #resources.stub(resource).and_return([instance_stub])
     resources
