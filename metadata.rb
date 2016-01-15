@@ -7,7 +7,7 @@ version          "10.0.0"
 
 depends 'build-essential'
 
-recipe "remote_recipe", "runs remote recipe" 
+recipe "rsc_remote_recipe", "runs remote recipe" 
 
 attribute "rightscale/refresh_token",
   :display_name => "Rightscale API refreshtoken",
