@@ -42,7 +42,8 @@ class Chef
     # @param attributes [Hash] the attribute for the recipe
     #
     def run(name, tags, attributes)
-      right_script = api_client.right_scripts.index(filter: ["name==#{name}"])
+      right_script = api_client.right_scripts.index(filter: ["name==#{name}"],
+        latest_only: true)
       raise "RightScript not found #{name}" if right_script.empty?
           
       resources = api_client.tags.by_tag(resource_type: 'instances', tags: [tags] )

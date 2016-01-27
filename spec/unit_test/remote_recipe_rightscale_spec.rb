@@ -91,7 +91,7 @@ describe Chef::RemoteRecipeRightscale do
     it "should run a recipe" do
  
       client_stub.right_scripts.should_receive(:index).
-        with(hash_including(filter: ["name==my script"])).
+        with(hash_including(filter: ["name==my script"], latest_only: true)).
         and_return([right_script_stub])
         
       client_stub.tags.should_receive(:by_tag).
