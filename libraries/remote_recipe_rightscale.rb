@@ -41,17 +41,22 @@ class Chef
     # @param tags [Array<String>] the recipient tags 
     # @param attributes [Hash] the attribute for the recipe
     #
-    def run(name, tags, attributes)
-      right_script = api_client.right_scripts.index(filter: ["name==#{name}"],
-        latest_only: true)
-      raise "RightScript not found #{name}" if right_script.empty?
-          
+    def run(name, tags, attributes)        
       resources = api_client.tags.by_tag(resource_type: 'instances', tags: [tags] )
       raise "No Instances found for tag #{tags}" if resources.empty?
 
       resources.first.links.each do |link|
         resource = api_client.resource(link["href"])
+        # find the server_template of the instance
+        st = resource.show.server_template 
+        # find the exact runnable bindings by name and which are operational on the instance
+        runnable_bindings = st.show.runnable_bindings.index.select{|r| 
+          r.right_script.show.name==name && r.sequence=='operational' 
+        }
+        raise "RightScript #{name} not found" if runnable_bindings.empty?
+        right_script = runnable_bindings.first.right_script
         if resource.show.state=='operational'
+          # run the found rightscript on the instance and pass the attributes as inputs.
           status =  resource.run_executable(right_script_href: right_script.first.href, inputs: attributes)
         end
       end
