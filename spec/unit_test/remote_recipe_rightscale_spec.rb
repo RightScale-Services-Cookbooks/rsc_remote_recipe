@@ -68,36 +68,53 @@ describe Chef::RemoteRecipeRightscale do
     client
   end
   
+  let(:runnable_bindings){bindings = double('runnable_bindings') 
+    #bindings.stub(:index)#.and_return([:right_script])
+    bindings.stub(:index).and_return([bindings])
+    bindings.stub(:right_script).and_return(right_script_stub)
+    bindings.stub(:sequence).and_return('operational')
+    bindings
+  }
+  
+  let(:server_template){template = double('server_template') 
+    template.stub_chain(:show,:runnable_bindings,:index).and_return(runnable_bindings)
+    
+    template
+  }
   
   let(:instance_stub) { 
     instance = double('instance', :links => [], :href => 'some_href')
     instance.stub_chain(:show,:state).and_return('operational')
+    instance.stub_chain(:show,:server_template).and_return(server_template)
     instance.stub(:run_executable)
     instance
   }
   let(:resources_stub){
-    resources = double('resources', :links => [{:href=>'somehref'},{:href=>'another'}], :href => 'some_href',
+    resources = double('resources', :links => [{:href=>'somehref'},
+        {:href=>'another'}], :href => 'some_href',
       :resource=>[instance_stub]) 
-    #resources.stub(resource).and_return([instance_stub])
     resources
   }
   
-  let(:right_script_stub){double('right_script', :href=>'some_href')}
+  let(:right_script_stub){right_script= double('right_script',  :href=>'some_href')
+    right_script.stub_chain(:show,:name).and_return("my script")
+    right_script
+    
+  }
   
   let(:attributes){{"text:my_input"=>"input value"}}
   
   describe "#run" do
     
     it "should run a recipe" do
- 
-      client_stub.right_scripts.should_receive(:index).
-        with(hash_including(filter: ["name==my script"], latest_only: true)).
-        and_return([right_script_stub])
-        
+     
       client_stub.tags.should_receive(:by_tag).
         with(hash_including(resource_type: 'instances', tags: ['database:active=true'])).
         and_return([resources_stub])
       
+      instance_stub.show.should_receive(:server_template)
+      server_template.show.runnable_bindings.index.should_receive(:select).
+        at_least(2).times.and_return([runnable_bindings])
       instance_stub.should_receive(:run_executable).
         with(hash_including(right_script_href: right_script_stub.href, inputs: attributes))
         
@@ -105,32 +122,27 @@ describe Chef::RemoteRecipeRightscale do
     end
     
     it "no rightscript found" do
-
-      # can not find rightscript
-      client_stub.right_scripts.should_receive(:index).
-        with(hash_including(filter: ["name==my script"])).
-        and_return([])
-        
-      client_stub.tags.should_not_receive(:by_tag).
-        with(hash_including(resource_type: 'instances', tags: ['database:active=true']))
       
+      client_stub.tags.should_receive(:by_tag).
+        with(hash_including(resource_type: 'instances', tags: ['database:active=true'])).
+        and_return([resources_stub])
+      
+      server_template.show.runnable_bindings.should_receive(:index).and_return([])
+
       instance_stub.should_not_receive(:run_executable)
         
       expect{provider.run("my script","database:active=true",attributes)}.
-        to raise_error("RightScript not found my script")
+        to raise_error("RightScript my script not found")
     end
     
     it "no tags found" do
-    
-      client_stub.right_scripts.should_receive(:index).
-        with(hash_including(filter: ["name==my script"])).
-        and_return([:href=>'/some_href'])
-        
+          
       # no tags found
       client_stub.tags.should_receive(:by_tag).
         with(hash_including(resource_type: 'instances', tags: ['database:active=true'])).
         and_return([])
-        
+      
+      server_template.show.runnable_bindings.should_not_receive(:index)
       
       instance_stub.should_not_receive(:run_executable)
         

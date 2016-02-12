@@ -57,7 +57,7 @@ class Chef
         right_script = runnable_bindings.first.right_script
         if resource.show.state=='operational'
           # run the found rightscript on the instance and pass the attributes as inputs.
-          status =  resource.run_executable(right_script_href: right_script.first.href, inputs: attributes)
+          status =  resource.run_executable(right_script_href: right_script.href, inputs: attributes)
         end
       end
       
