@@ -2,6 +2,10 @@
 A LWRP for running remote recipes within RightScale. Examples would be to attach 
 to load balancers or detach from load balancers.  
 
+### Version
+* Chef Client 11.6
+* [RightLink 10](http://docs.rightscale.com/rl10/) See cookbook version 1.0.0 for RightLink 6 support
+
 ### Attributes
 * tags - RightScale tags on remote server(s) to search for.
 * attributes - A HASH of attributes expected on the remote recipe.
