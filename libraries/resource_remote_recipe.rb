@@ -63,6 +63,14 @@ class Chef
           :kind_of =>[Hash,NilClass]
         )
       end
+      def match_all(arg=nil)
+        set_or_return(
+          :match_all,
+          arg,
+          :kind_of => [ TrueClass, FalseClass, NilClass ],
+          :default => false
+        )
+      end
     end
   end
 end
