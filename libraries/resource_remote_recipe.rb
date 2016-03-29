@@ -68,7 +68,8 @@ class Chef
           :match_all,
           arg,
           :kind_of => [ TrueClass, FalseClass, NilClass ],
-          :default => false
+          :default => false,
+          :required => false
         )
       end
     end
