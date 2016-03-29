@@ -36,6 +36,7 @@ class Chef
         @current_resource ||= Chef::Resource::RemoteRecipe.new(@new_resource.name)
         @current_resource.tags(@new_resource.tags)
         @current_resource.attributes(@new_resource.attributes)
+        @current_resource.match_all(@new_resource.match_all)
         @recipe_helper = get_helper(@run_context.node)
         @current_resource
         
@@ -44,7 +45,7 @@ class Chef
       # Run a remote recipe on the server.
       #
       def action_run
-        status = @recipe_helper.run(@new_resource.name,@new_resource.tags,@new_resource.attributes )
+        status = @recipe_helper.run(@new_resource.name, @new_resource.tags, @new_resource.attributes, @new_resource.match_all)
         Chef::Log.info "Recipe executed '#{new_resource.name}'"
         new_resource.updated_by_last_action(true)
       end
