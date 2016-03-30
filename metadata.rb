@@ -3,7 +3,7 @@ maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
 license          "Apache 2.0"
 description      "Runs rightscale remote recipes" 
-version          "10.0.0"
+version          "10.0.1"
 
 depends 'build-essential'
 

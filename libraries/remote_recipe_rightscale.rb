@@ -41,8 +41,8 @@ class Chef
     # @param tags [Array<String>] the recipient tags 
     # @param attributes [Hash] the attribute for the recipe
     #
-    def run(name, tags, attributes)        
-      resources = api_client.tags.by_tag(resource_type: 'instances', tags: [tags] )
+    def run(name, tags, attributes, match_all)
+      resources = api_client.tags.by_tag(resource_type: 'instances', tags: [tags], match_all: match_all )
       raise "No Instances found for tag #{tags}" if resources.empty?
 
       resources.first.links.each do |link|

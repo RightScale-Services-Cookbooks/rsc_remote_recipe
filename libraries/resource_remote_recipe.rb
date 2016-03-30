@@ -53,14 +53,25 @@ class Chef
         set_or_return(
           :tags,
           arg,
-          :kind_of => [String,Array]
+          :kind_of => [ String, Array ]
         )
       end
+
       def attributes(arg = nil)
         set_or_return(
           :attributes,
           arg,
-          :kind_of =>[Hash,NilClass]
+          :kind_of =>[ Hash, NilClass ]
+        )
+      end
+
+      def match_all(arg=nil)
+        set_or_return(
+          :match_all,
+          arg,
+          :kind_of => [ TrueClass, FalseClass, NilClass ],
+          :default => false,
+          :required => false
         )
       end
     end

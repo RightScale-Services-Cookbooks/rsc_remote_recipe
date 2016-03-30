@@ -118,7 +118,7 @@ describe Chef::RemoteRecipeRightscale do
       instance_stub.should_receive(:run_executable).
         with(hash_including(right_script_href: right_script_stub.href, inputs: attributes))
         
-      provider.run("my script","database:active=true",attributes)
+      provider.run("my script","database:active=true",attributes,false)
     end
     
     it "no rightscript found" do
@@ -131,7 +131,7 @@ describe Chef::RemoteRecipeRightscale do
 
       instance_stub.should_not_receive(:run_executable)
         
-      expect{provider.run("my script","database:active=true",attributes)}.
+      expect{provider.run("my script","database:active=true",attributes,false)}.
         to raise_error("RightScript my script not found")
     end
     
@@ -146,7 +146,7 @@ describe Chef::RemoteRecipeRightscale do
       
       instance_stub.should_not_receive(:run_executable)
         
-      expect{provider.run("my script","database:active=true",attributes)}.
+      expect{provider.run("my script","database:active=true",attributes,false)}.
         to raise_error("No Instances found for tag database:active=true")
     end
     
