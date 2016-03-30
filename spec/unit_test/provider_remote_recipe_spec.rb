@@ -51,7 +51,7 @@ describe Chef::Provider::RemoteRecipe do
     it "should run_execuatble" do
       new_resource.tags tags
       new_resource.attributes attributes
-      helper_stub.should_receive(:run).with(name,tags,attributes)
+      helper_stub.should_receive(:run).with(name,tags,attributes,false)
       provider.run_action(:run)
     end
   end
