@@ -2,12 +2,12 @@ name             "rsc_remote_recipe"
 maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
 license          "Apache 2.0"
-description      "Runs rightscale remote recipes" 
-version          "10.0.1"
+description      "Runs rightscale remote recipes"
+version          "10.1.0"
 
 depends 'build-essential'
 
-recipe "rsc_remote_recipe", "runs remote recipe" 
+recipe "rsc_remote_recipe", "runs remote recipe"
 
 attribute "rightscale/refresh_token",
   :display_name => "Rightscale API refreshtoken",
