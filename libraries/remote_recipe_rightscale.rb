@@ -21,46 +21,45 @@ require_relative 'remote_recipe_base'
 
 class Chef
   class RemoteRecipeRightscale < RemoteRecipeBase
-    
-    def initialize(refresh_token,api_url)
+    def initialize(refresh_token, api_url)
       @refresh_token = refresh_token
       @api_url = api_url
     end
-    
+
     def initialize_api_client
-      require "right_api_client"
-      RightApi::Client.new(:refresh_token => @refresh_token, :api_url=>@api_url)
+      require 'right_api_client'
+      RightApi::Client.new(refresh_token: @refresh_token, api_url: @api_url)
     end
-    
+
     def api_client
       @api_client = initialize_api_client
     end
-    
+
     # Creates a tag on the server.
     # @param name [String] name of the recipe to run
-    # @param tags [Array<String>] the recipient tags 
+    # @param tags [Array<String>] the recipient tags
     # @param attributes [Hash] the attribute for the recipe
     #
     def run(name, tags, attributes, match_all)
-      resources = api_client.tags.by_tag(resource_type: 'instances', tags: [tags], match_all: match_all )
+      resources = api_client.tags.by_tag(resource_type: 'instances', tags: [tags], match_all: match_all)
       raise "No Instances found for tag #{tags}" if resources.empty?
 
       resources.first.links.each do |link|
-        resource = api_client.resource(link["href"])
+        resource = api_client.resource(link['href'])
         # find the server_template of the instance
-        st = resource.show.server_template 
+        st = resource.show.server_template
         # find the exact runnable bindings by name and which are operational on the instance
-        runnable_bindings = st.show.runnable_bindings.index.select{|r| 
-          r.right_script.show.name==name && r.sequence=='operational' 
-        }
+        runnable_bindings = st.show.runnable_bindings.index.select do |r|
+          r.right_script.show.name == name && r.sequence == 'operational'
+        end
         raise "RightScript #{name} not found" if runnable_bindings.empty?
         right_script = runnable_bindings.first.right_script
-        if resource.show.state=='operational'
+        if resource.show.state == 'operational'
           # run the found rightscript on the instance and pass the attributes as inputs.
           status =  resource.run_executable(right_script_href: right_script.href, inputs: attributes)
+          Chef::Log.info status
         end
       end
-      
     end
   end
 end

@@ -22,22 +22,20 @@ require 'spec_helper'
 describe Chef::RemoteRecipe do
   let(:node) { Chef::Node.new }
 
-  describe "::factory" do
+  describe '::factory' do
     let(:shell_out) { Struct.new(:exitstatus) }
     let(:stdout) { Struct.new(:stdout) }
 
-    context "cloud provider is vagrant" do
-      it "should return an object of RemoteRecipeVagrant class" do
+    context 'cloud provider is vagrant' do
+      it 'should return an object of RemoteRecipeVagrant class' do
         node.set['cloud']['provider'] = 'vagrant'
-        expect(Chef::Log).to receive(:info).with("RemoteRecipe is not supported in Vagrant")
+        expect(Chef::Log).to receive(:info).with('RemoteRecipe is not supported in Vagrant')
         Chef::RemoteRecipe.factory(node)
       end
     end
 
-
-    
-    context "Rightscale is the provider" do
-      it "should return an object of RemoteRecipeRightscale class" do
+    context 'Rightscale is the provider' do
+      it 'should return an object of RemoteRecipeRightscale class' do
         node.set['cloud']['provider'] = 'ec2'
         node.set['rightscale']['refreshtoken'] = 'abc123456'
         Chef::RemoteRecipe.factory(node).should be_an_instance_of(Chef::RemoteRecipeRightscale)

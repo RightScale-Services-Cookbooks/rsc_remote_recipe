@@ -51,105 +51,100 @@ describe Chef::RemoteRecipeRightscale do
     EOF
   end
 
-    
   let(:provider) do
-    provider = Chef::RemoteRecipeRightscale.new('123456','https://us-3.rightscale.com')
+    provider = Chef::RemoteRecipeRightscale.new('123456', 'https://us-3.rightscale.com')
     provider.stub(:initialize_api_client).and_return(client_stub)
     provider
   end
-  
+
   let!(:client_stub) do
-    client = double('RightApi::Client', :log => nil)
-    #client.stub(:get_instance).and_return(instance_stub)
+    client = double('RightApi::Client', log: nil)
+    # client.stub(:get_instance).and_return(instance_stub)
     client.stub(:resource).and_return(instance_stub)
-    client.stub_chain(:right_scripts,:index)
-    client.stub_chain(:tags,:by_tag)
-    
+    client.stub_chain(:right_scripts, :index)
+    client.stub_chain(:tags, :by_tag)
+
     client
   end
-  
-  let(:runnable_bindings){bindings = double('runnable_bindings') 
-    #bindings.stub(:index)#.and_return([:right_script])
+
+  let(:runnable_bindings) do
+    bindings = double('runnable_bindings')
+    # bindings.stub(:index)#.and_return([:right_script])
     bindings.stub(:index).and_return([bindings])
     bindings.stub(:right_script).and_return(right_script_stub)
     bindings.stub(:sequence).and_return('operational')
     bindings
-  }
-  
-  let(:server_template){template = double('server_template') 
-    template.stub_chain(:show,:runnable_bindings,:index).and_return(runnable_bindings)
-    
+  end
+
+  let(:server_template) do
+    template = double('server_template')
+    template.stub_chain(:show, :runnable_bindings, :index).and_return(runnable_bindings)
+
     template
-  }
-  
-  let(:instance_stub) { 
-    instance = double('instance', :links => [], :href => 'some_href')
-    instance.stub_chain(:show,:state).and_return('operational')
-    instance.stub_chain(:show,:server_template).and_return(server_template)
+  end
+
+  let(:instance_stub) do
+    instance = double('instance', links: [], href: 'some_href')
+    instance.stub_chain(:show, :state).and_return('operational')
+    instance.stub_chain(:show, :server_template).and_return(server_template)
     instance.stub(:run_executable)
     instance
-  }
-  let(:resources_stub){
-    resources = double('resources', :links => [{:href=>'somehref'},
-        {:href=>'another'}], :href => 'some_href',
-      :resource=>[instance_stub]) 
+  end
+  let(:resources_stub) do
+    resources = double('resources', links: [{ href: 'somehref' },
+                                            { href: 'another' }], href: 'some_href',
+                                    resource: [instance_stub])
     resources
-  }
-  
-  let(:right_script_stub){right_script= double('right_script',  :href=>'some_href')
-    right_script.stub_chain(:show,:name).and_return("my script")
+  end
+
+  let(:right_script_stub) do
+    right_script = double('right_script', href: 'some_href')
+    right_script.stub_chain(:show, :name).and_return('my script')
     right_script
-    
-  }
-  
-  let(:attributes){{"text:my_input"=>"input value"}}
-  
-  describe "#run" do
-    
-    it "should run a recipe" do
-     
-      client_stub.tags.should_receive(:by_tag).
-        with(hash_including(resource_type: 'instances', tags: ['database:active=true'])).
-        and_return([resources_stub])
-      
+  end
+
+  let(:attributes) { { 'text:my_input' => 'input value' } }
+
+  describe '#run' do
+    it 'should run a recipe' do
+      client_stub.tags.should_receive(:by_tag)
+                 .with(hash_including(resource_type: 'instances', tags: ['database:active=true']))
+                 .and_return([resources_stub])
+
       instance_stub.show.should_receive(:server_template)
-      server_template.show.runnable_bindings.index.should_receive(:select).
-        at_least(2).times.and_return([runnable_bindings])
-      instance_stub.should_receive(:run_executable).
-        with(hash_including(right_script_href: right_script_stub.href, inputs: attributes))
-        
-      provider.run("my script","database:active=true",attributes,false)
+      server_template.show.runnable_bindings.index.should_receive(:select)
+                     .at_least(2).times.and_return([runnable_bindings])
+      instance_stub.should_receive(:run_executable)
+                   .with(hash_including(right_script_href: right_script_stub.href, inputs: attributes))
+
+      provider.run('my script', 'database:active=true', attributes, false)
     end
-    
-    it "no rightscript found" do
-      
-      client_stub.tags.should_receive(:by_tag).
-        with(hash_including(resource_type: 'instances', tags: ['database:active=true'])).
-        and_return([resources_stub])
-      
+
+    it 'no rightscript found' do
+      client_stub.tags.should_receive(:by_tag)
+                 .with(hash_including(resource_type: 'instances', tags: ['database:active=true']))
+                 .and_return([resources_stub])
+
       server_template.show.runnable_bindings.should_receive(:index).and_return([])
 
       instance_stub.should_not_receive(:run_executable)
-        
-      expect{provider.run("my script","database:active=true",attributes,false)}.
-        to raise_error("RightScript my script not found")
+
+      expect { provider.run('my script', 'database:active=true', attributes, false) }
+        .to raise_error('RightScript my script not found')
     end
-    
-    it "no tags found" do
-          
+
+    it 'no tags found' do
       # no tags found
-      client_stub.tags.should_receive(:by_tag).
-        with(hash_including(resource_type: 'instances', tags: ['database:active=true'])).
-        and_return([])
-      
+      client_stub.tags.should_receive(:by_tag)
+                 .with(hash_including(resource_type: 'instances', tags: ['database:active=true']))
+                 .and_return([])
+
       server_template.show.runnable_bindings.should_not_receive(:index)
-      
+
       instance_stub.should_not_receive(:run_executable)
-        
-      expect{provider.run("my script","database:active=true",attributes,false)}.
-        to raise_error("No Instances found for tag database:active=true")
+
+      expect { provider.run('my script', 'database:active=true', attributes, false) }
+        .to raise_error('No Instances found for tag database:active=true')
     end
-    
   end
- 
 end

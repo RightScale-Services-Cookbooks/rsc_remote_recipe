@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-require "spec_helper"
+require 'spec_helper'
 
 describe Chef::Provider::RemoteRecipe do
   let(:provider) do
@@ -33,14 +33,14 @@ describe Chef::Provider::RemoteRecipe do
     node = Chef::Node.new
     node
   end
-  let(:name) {'myrecipe'}
-  let(:tags) {'namespace:predicate=value' }
-  let(:attributes){ 
-    hash={}; 
-    hash[:foo]='bar' 
+  let(:name) { 'myrecipe' }
+  let(:tags) { 'namespace:predicate=value' }
+  let(:attributes) do
+    hash = {}
+    hash[:foo] = 'bar'
     hash
-    }
-  
+  end
+
   let(:helper_stub) { double('remote_recipe') }
 
   describe 'actions' do
@@ -48,10 +48,10 @@ describe Chef::Provider::RemoteRecipe do
       provider.load_current_resource
     end
 
-    it "should run_execuatble" do
+    it 'should run_execuatble' do
       new_resource.tags tags
       new_resource.attributes attributes
-      helper_stub.should_receive(:run).with(name,tags,attributes,false)
+      helper_stub.should_receive(:run).with(name, tags, attributes, false)
       provider.run_action(:run)
     end
   end

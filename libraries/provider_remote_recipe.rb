@@ -39,14 +39,13 @@ class Chef
         @current_resource.match_all(@new_resource.match_all)
         @recipe_helper = get_helper(@run_context.node)
         @current_resource
-        
       end
 
       # Run a remote recipe on the server.
       #
       def action_run
         status = @recipe_helper.run(@new_resource.name, @new_resource.tags, @new_resource.attributes, @new_resource.match_all)
-        Chef::Log.info "Recipe executed '#{new_resource.name}'"
+        Chef::Log.info "Recipe executed '#{new_resource.name}' status:#{status}"
         new_resource.updated_by_last_action(true)
       end
 
@@ -61,7 +60,6 @@ class Chef
       def get_helper(node)
         Chef::RemoteRecipe.factory(node)
       end
-
     end
   end
 end

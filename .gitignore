@@ -1,10 +1,25 @@
 .vagrant
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
 /cookbooks
+cache_dir
 
 # Bundler
+Gemfile.lock
 bin/*
 .bundle/*
 
+VERSION
 .kitchen/
 .kitchen.local.yml
-/Gemfile.lock
+
+doc/
+.yardoc/
+berks-cookbooks/
+knife.rb
+syntaxcache/
+coverage/

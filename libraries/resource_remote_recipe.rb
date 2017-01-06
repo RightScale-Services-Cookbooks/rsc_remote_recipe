@@ -22,16 +22,13 @@ require 'chef/resource'
 class Chef
   class Resource
     class RemoteRecipe < Chef::Resource
-
       def initialize(name, run_context = nil)
         super
         @resource_name = :remote_recipe
         @allowed_actions.push(:run)
         @provider = Chef::Provider::RemoteRecipe
         @action = :run
-        @name=name
-
-        
+        @name = name
       end
 
       # Name of the remote recipe
@@ -44,8 +41,8 @@ class Chef
         set_or_return(
           :name,
           arg,
-          :kind_of => String,
-          :default => ""
+          kind_of: String,
+          default: ''
         )
       end
 
@@ -53,7 +50,7 @@ class Chef
         set_or_return(
           :tags,
           arg,
-          :kind_of => [ String, Array ]
+          kind_of: [String, Array]
         )
       end
 
@@ -61,17 +58,17 @@ class Chef
         set_or_return(
           :attributes,
           arg,
-          :kind_of =>[ Hash, NilClass ]
+          kind_of: [Hash, NilClass]
         )
       end
 
-      def match_all(arg=nil)
+      def match_all(arg = nil)
         set_or_return(
           :match_all,
           arg,
-          :kind_of => [ TrueClass, FalseClass, NilClass ],
-          :default => false,
-          :required => false
+          kind_of: [TrueClass, FalseClass, NilClass],
+          default: false,
+          required: false
         )
       end
     end

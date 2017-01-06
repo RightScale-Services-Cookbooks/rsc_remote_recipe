@@ -17,5 +17,4 @@
 # limitations under the License.
 #
 
-
-default['build-essential']['compile_time'] = true 
+default['build-essential']['compile_time'] = true
