@@ -25,7 +25,7 @@ describe Chef::RemoteRecipeBase do
   let(:base) { Chef::RemoteRecipeBase.new }
 
   before do
-    Kernel.stub(:sleep) {|seconds| seconds}
+    Kernel.stub(:sleep) { |seconds| seconds }
   end
 
   describe '#sleep_interval' do
@@ -40,10 +40,4 @@ describe Chef::RemoteRecipeBase do
       interval.should == MAX_SLEEP_INTERVAL
     end
   end
-
-
-
-
-
-
 end

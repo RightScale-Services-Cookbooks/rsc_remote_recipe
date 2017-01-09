@@ -17,13 +17,13 @@
 # limitations under the License.
 #
 
-raise "node['rightscale']['refresh_token'] is not set.  Add the RightScale API "+ 
-  "Refresh Token to continue." if node["rightscale"]["refresh_token"].nil?
-raise "node['rightscale']['api_url'] is not set.  Add the RightScale API URL "+ 
-  "to continue." if node["rightscale"]["api_url"].nil?
+raise "node['rightscale']['refresh_token'] is not set.  Add the RightScale API "\
+      'Refresh Token to continue.' if node['rightscale']['refresh_token'].nil?
+raise "node['rightscale']['api_url'] is not set.  Add the RightScale API URL "\
+      'to continue.' if node['rightscale']['api_url'].nil?
 
-node.default['build-essential']['compile_time'] = true 
+node.default['build-essential']['compile_time'] = true
 include_recipe 'build-essential'
 
-#log "Installing 'right_api_client' gem"
+# log "Installing 'right_api_client' gem"
 chef_gem 'right_api_client'

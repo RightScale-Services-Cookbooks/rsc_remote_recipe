@@ -19,7 +19,6 @@
 
 class Chef
   class RemoteRecipeBase
-
     # Default query timeout (in seconds)
     #
     DEFAULT_QUERY_TIMEOUT = 120 unless const_defined?(:DEFAULT_QUERY_TIMEOUT)
@@ -32,18 +31,15 @@ class Chef
     #
     # @param name [String] the recipe to run
     #
-    def run(name)
+    def run(_name)
       not_implemented
     end
-
 
     private
 
     # Use the RemoteRecipe.factory method to create this class.
     #
     def initalize; end
-
-    
 
     # Calculates the interval for re-querying tags. For every re-query the interval
     # is increased exponentially until the interval reaches the maximum limit of
@@ -58,14 +54,13 @@ class Chef
       [delay * delay, MAX_SLEEP_INTERVAL].min
     end
 
-
     # Raises an error if the method called is not implemented in the class.
     #
     # @raise [NotImplementedError] if the method call is not implemented
     #
     def not_implemented
       caller[0] =~ /`(.*?)'/
-      raise NotImplementedError, "#{$1} is not implemented on #{self.class}"
+      raise NotImplementedError, "#{Regexp.last_match(1)} is not implemented on #{self.class}"
     end
   end
 end

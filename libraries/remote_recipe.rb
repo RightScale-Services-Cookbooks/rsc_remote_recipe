@@ -21,7 +21,6 @@ require_relative 'remote_recipe_rightscale'
 
 class Chef
   module RemoteRecipe
-
     # Factory method for instantiating the correct remote recipe class based on
     # `node['cloud']['provider']` value. This value will be set to `'vagrant'` on
     # Vagrant environments.
@@ -32,21 +31,17 @@ class Chef
     #   the remote recipe environment
     #
     def self.factory(node)
-      
       if node['cloud'] && node['cloud']['provider'] != 'vagrant'
         # This is a RightScale environment
-        Chef::RemoteRecipeRightscale.new(node["rightscale"]["refresh_token"],node["rightscale"]["api_url"])
+        Chef::RemoteRecipeRightscale.new(node['rightscale']['refresh_token'], node['rightscale']['api_url'])
       elsif node['cloud'] && node['cloud']['provider'] == 'vagrant'
         # This is a Vagrant environment
-        #hostname, cache_dir = vagrant_params_from_node(node)
-        Chef::Log.info("RemoteRecipe is not supported in Vagrant")
-        #Chef::RemoteRecipeVagrant.new(hostname, cache_dir)
+        # hostname, cache_dir = vagrant_params_from_node(node)
+        Chef::Log.info('RemoteRecipe is not supported in Vagrant')
+        # Chef::RemoteRecipeVagrant.new(hostname, cache_dir)
       else
-        raise "Could not detect a supported remote receipe environment."
+        raise 'Could not detect a supported remote receipe environment.'
       end
     end
-    
-
   end
-
 end
