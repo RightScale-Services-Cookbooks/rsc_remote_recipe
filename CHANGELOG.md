@@ -3,7 +3,7 @@ rsc_remote_recipe Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the rsc_remote_recipe cookbook.
 
-v10.1.2
+v10.2.0
 -------
 - adding in account_id to rightscale provider - Issue: [#6][]
 
