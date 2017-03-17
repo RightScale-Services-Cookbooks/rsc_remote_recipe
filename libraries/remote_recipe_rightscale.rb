@@ -22,7 +22,7 @@ require_relative 'remote_recipe_base'
 
 class Chef
   class RemoteRecipeRightscale < RemoteRecipeBase
-    def initialize(refresh_token, api_url)
+    def initialize(refresh_token, api_url,account_id)
       @refresh_token = refresh_token
       @api_url = api_url
       @account_id = account_id

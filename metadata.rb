@@ -30,6 +30,6 @@ attribute 'rightscale/api_url',
 attribute 'rightscale/account_id',
   display_name: 'Rightscale Account ID',
   description: 'RightScale Account ID',
-  type: 'string'
-  required: 'required'
+  type: 'string',
+  required: 'required',
   recipes: ['rsc_remote_recipe::default']
