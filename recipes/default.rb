@@ -22,7 +22,7 @@ raise "node['rightscale']['refresh_token'] is not set.  Add the RightScale API "
       'Refresh Token to continue.' if node['rightscale']['refresh_token'].nil?
 raise "node['rightscale']['api_url'] is not set.  Add the RightScale API URL "\
       'to continue.' if node['rightscale']['api_url'].nil?
-raise "node['rightscale']['account_id'] is not set. Add the Rightscale account id"\
+raise "node['rightscale']['account_id'] is not set. Add the Rightscale account id "\
       'to continue.' if node['rightscale']['account_id'].nil?
 
 node.default['build-essential']['compile_time'] = true
