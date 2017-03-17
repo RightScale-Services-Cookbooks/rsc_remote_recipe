@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 name             'rsc_remote_recipe'
 maintainer       'RightScale, Inc.'
 maintainer_email 'support@rightscale.com'
