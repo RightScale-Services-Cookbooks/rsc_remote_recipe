@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook Name:: remote_recipe
 # Spec:: provider_remote_recipe_spec

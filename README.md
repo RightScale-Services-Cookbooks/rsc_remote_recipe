@@ -7,6 +7,9 @@ to load balancers or detach from load balancers.
 * [RightLink 10](http://docs.rightscale.com/rl10/) See cookbook version 1.0.0 for RightLink 6 support
 
 ### Attributes
+* `node['rightscale']['refresh_token']` - Rightscale API refreshtoken
+* `node['rightscale']['api_url']` - Rightscale API url
+* `node['rightscale']['account_id']` - Rightscale Account ID
 * tags - RightScale tags on remote server(s) to search for.
 * attributes - A HASH of attributes expected on the remote recipe.
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook Name:: remote_recipe
 # Spec:: remote_recipe_rightscale_spec
@@ -52,7 +53,7 @@ describe Chef::RemoteRecipeRightscale do
   end
 
   let(:provider) do
-    provider = Chef::RemoteRecipeRightscale.new('123456', 'https://us-3.rightscale.com')
+    provider = Chef::RemoteRecipeRightscale.new('123456', 'https://us-3.rightscale.com', '1234')
     provider.stub(:initialize_api_client).and_return(client_stub)
     provider
   end
