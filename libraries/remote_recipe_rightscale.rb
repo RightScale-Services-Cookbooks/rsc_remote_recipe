@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook Name:: remote_recipe
 # Library:: remote_recipe_rightscale
@@ -24,11 +25,12 @@ class Chef
     def initialize(refresh_token, api_url)
       @refresh_token = refresh_token
       @api_url = api_url
+      @account_id = account_id
     end
 
     def initialize_api_client
       require 'right_api_client'
-      RightApi::Client.new(refresh_token: @refresh_token, api_url: @api_url)
+      RightApi::Client.new(refresh_token: @refresh_token, api_url: @api_url, account_id: @account_id)
     end
 
     def api_client

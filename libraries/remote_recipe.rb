@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook Name:: remote_recipe
 # Library:: remote_recipe_helper
@@ -33,7 +34,7 @@ class Chef
     def self.factory(node)
       if node['cloud'] && node['cloud']['provider'] != 'vagrant'
         # This is a RightScale environment
-        Chef::RemoteRecipeRightscale.new(node['rightscale']['refresh_token'], node['rightscale']['api_url'])
+        Chef::RemoteRecipeRightscale.new(node['rightscale']['refresh_token'], node['rightscale']['api_url'], node['rightscale']['account_id'])
       elsif node['cloud'] && node['cloud']['provider'] == 'vagrant'
         # This is a Vagrant environment
         # hostname, cache_dir = vagrant_params_from_node(node)
